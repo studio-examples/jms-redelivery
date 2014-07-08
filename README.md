@@ -1,4 +1,54 @@
-jms-redelivery
-==============
+#JMS Rollback and Redelivery
 
-This example demonstrates a solution for the following use case – there is a JMS message in transaction inside Mule and suddenly, before committing something bad happened. This message should be rollbacked and retried to deliver, if unable to commit for a specific number of times redirected to a dead letter queue (DLQ).
+This example shows how to implement jms rollback and redelivery within the Anypoint Studio. The JMS connectors in this example are configured to the activeMQ
+
+
+### Assumption
+This document assumes that you are familiar with Mule ESB and the [Anypoint Studio interface](http://www.mulesoft.org/documentation/display/current/Anypoint+Studio+Essentials). Further, this example assumes that you have [Apache Maven](http://maven.apache.org/download.cgi) and [ActiveMQ](http://activemq.apache.org/getting-started.html) running on your machine.
+
+###Example Use Case
+In this example there is a JMS message in transaction inside Anypoint Studio which throws an exception. This message is then handled by the Exception Strategy Component, which rollbacks and retries to deliver the same message. After a specific number of unsuccessful attempts to commit (5 in this case), it redirects the message to a Dead Letter Queue (DLQ).
+
+###Set Up and Run the Example
+
+1. **Open the example application** in Anypoint Studio. Do not run the application yet.
+
+
+2. **Start the ActiveMQ server**
+      * Navigate to the activeMQ home directory in the command terminal and then use the  following command to start the activeMQ server
+      
+            bin/activemq start 
+
+      * You should get a message that is similar to the one shown below in your command terminal when your activeMQ server is running
+     
+            INFO: Using java '/System/Library/Frameworks/JavaVM.framework/Home/bin/java'
+            INFO: Starting - inspect logfiles specified in logging.properties and log4j.properties to get details
+            INFO: pidfile created : . . . 
+    
+  3. Check if activemq-all-5.9.1.jar is configured to the java build path. Else, if you are running a different version of activeMQ you will need to manually configure this. You can do so by following these steps:
+  
+    * Configure the project build path by adding the activeMQ jar file to the project folder. 
+    * Right click on the project folder in the Package Explorer, then   click on  “Properties/Java Build Path”. Under the “Libraries” tab, click on “Add External Jars”. 
+    * Now browse to the ActiveMQ home directory and add the jar file named “activemq-all-5.9.1.jar”(The activeMQ version at the time of building this documentation was 5.9.1). Click on “Open/Ok” to do so.
+
+4. In the Package Explorer, right-click on the project, then select Run As/Mule Application. Studio runs the application on the embedded server and connects to the localhost on the port to which the HTTP end-point is configured.
+
+   Your Mule application is now running!
+   
+5. Send JSON Data to the url using the REST Console or curl through an HTTP POST method.
+               
+       Sample JSON sales data:{"ITEM_ID"= 001, "ITEM_NAME" = "Shirt", "QTY" = 1, "PRICE" = 20}
+
+6. Check if the message was received in the Studio Console
+      
+   * Log in to ActiveMQ admin page at http://localhost:8161/admin/queues.jsp with the default username and password “admin”. View if the message was added to the queue
+
+In the ActiveMQ queue, click on the sales link and then on the link under the message id column. On doing so, you will see details of the message that was added to the JMS queue:
+
+
+###Go Further
+
+* [Blog](http://blogs.mulesoft.org/mule-school-jms-tutorial/) post  to understand the configuration of this example better
+* [Blog](http://blogs.mulesoft.org/jms-message-rollback-and-redelivery/) post on JMS message rollback and redelivery with Mule
+* [Blog](http://blogs.mulesoft.org/jms-message-rollback-and-redelivery/) post on Message sequencing with Mule and JMS message groups
+
