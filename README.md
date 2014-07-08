@@ -1,6 +1,6 @@
 #JMS Rollback and Redelivery
 
-This example shows how to implement jms rollback and redelivery within the Anypoint Studio. The JMS connectors in this example are configured to the activeMQ
+This example shows how to implement jms rollback and redelivery within the Anypoint Studio. The JMS connectors in this example are configured to the activeMQ MoM.
 
 
 ### Assumption
